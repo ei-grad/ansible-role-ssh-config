@@ -4,7 +4,7 @@
    tags: [configuration,ssh]
 
  - name: ensure .ssh/config is manage by ansible
-   shell: /bin/grep 'Ansible managed' {{ssh_config_home}}/.ssh/config
+   shell: grep 'Ansible managed' {{ssh_config_home}}/.ssh/config
    register: _ssh_config
    ignore_errors: True
    changed_when: "_ssh_config.rc == 1"
