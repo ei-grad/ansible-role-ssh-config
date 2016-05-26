@@ -12,20 +12,20 @@
    tags: [configuration,ssh]
 
  - name: ensure header for config exist
-   template: src=01-header.j2 dest={{ssh_config_home}}/.ssh/config.d/01-header
+   template: src=01-header.j2 dest={{ssh_config_home}}/.ssh/config.d/01-header.conf
    tags: [configuration,ssh]
 
  - name: backup user old .ssh/config to .ssh/config.d/10-perso
-   shell: cp {{ssh_config_home}}/.ssh/config {{ssh_config_home}}/.ssh/config.d/10-perso
+   shell: cp {{ssh_config_home}}/.ssh/config {{ssh_config_home}}/.ssh/config.d/10-perso.conf
    when: "_ssh_config.rc == 1"
    tags: [configuration,ssh]
 
  - name: ensure config for each host of the inventory exist
-   template: src=inventory.j2 dest={{ssh_config_home}}/.ssh/config.d/{{ssh_config_order}}-{{inventory_file}}-{{hostvars[item].inventory_hostname_short}}
+   template: src=inventory.j2 dest={{ssh_config_home}}/.ssh/config.d/{{ssh_config_order}}-{{inventory_file}}-{{hostvars[item].inventory_hostname_short}}.conf
    when: item != 'localhost' and item != '127.0.0.1'
-   with_items: groups.all
+   with_items: "{{ groups.all }}"
    tags: [configuration,ssh]
 
  - name: assemble ssh config
-   assemble: src={{ssh_config_home}}/.ssh/config.d dest={{ssh_config_home}}/.ssh/config
+   assemble: src={{ssh_config_home}}/.ssh/config.d regexp=".*\.conf$" dest={{ssh_config_home}}/.ssh/config
    tags: [configuration,ssh]
