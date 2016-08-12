@@ -1,6 +1,6 @@
 ---
  - name: ensure .ssh/config.d exist
-   file: path={{ssh_config_home}}/.ssh/config.d state=directory owner="{{ssh_config_user}}" group="{{ssh_config_group}}" mode=700
+   file: path={{ssh_config_home}}/.ssh/config.d state=directory owner="{{ssh_config_user}}" mode=700
    tags: [configuration,ssh]
 
  - name: ensure .ssh/config is manage by ansible
