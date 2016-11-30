@@ -1,10 +1,10 @@
 ---
  - name: ensure .ssh/config.d exist
-   file: path={{ssh_config_home}}/.ssh/config.d state=directory owner="{{ssh_config_user}}" mode=700
+   file: path={{ssh_config_home}}/.ssh/config.d state=directory owner="{{ssh_config_user}}" mode=0700
    tags: [configuration,ssh]
 
  - name: ensure .ssh/config is manage by ansible
-   shell: grep 'Ansible managed' {{ssh_config_home}}/.ssh/config
+   command: grep 'Ansible managed' {{ssh_config_home}}/.ssh/config
    register: _ssh_config
    ignore_errors: True
    changed_when: "_ssh_config.rc == 1"
@@ -16,7 +16,7 @@
    tags: [configuration,ssh]
 
  - name: backup user old .ssh/config to .ssh/config.d/10-perso
-   shell: cp {{ssh_config_home}}/.ssh/config {{ssh_config_home}}/.ssh/config.d/10-perso.conf
+   command: cp {{ssh_config_home}}/.ssh/config {{ssh_config_home}}/.ssh/config.d/10-perso.conf
    when: "_ssh_config.rc == 1"
    tags: [configuration,ssh]
 
